@@ -1,11 +1,18 @@
 from flask import Blueprint, request, jsonify
 from app.token_manager import TokenManager
+from app.config import get_config
 from werkzeug.security import generate_password_hash, check_password_hash
 
 auth_bp = Blueprint('auth', __name__)
-token_manager = TokenManager()
 
-# In-memory user store (can be replaced with DB)
+# Load secure config and initialize TokenManager
+config = get_config()
+token_manager = TokenManager(
+    encryption_key=config["ENCRYPTION_KEY"],
+    hmac_key=config["HMAC_KEY"]
+)
+
+# In-memory user store (temporary, for demo purposes)
 users = {}
 
 @auth_bp.route('/register', methods=['POST'])

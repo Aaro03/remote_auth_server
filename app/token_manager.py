@@ -8,9 +8,10 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 from dotenv import load_dotenv
 
-load_dotenv()
+if os.getenv("RENDER") != "true":
+    from dotenv import load_dotenv
+    load_dotenv()
 
-# Read encryption and HMAC keys from environment variables and decode from base64
 ENCRYPTION_KEY = base64.b64decode(os.getenv("ENCRYPTION_KEY"))
 HMAC_KEY = base64.b64decode(os.getenv("HMAC_KEY"))
 
